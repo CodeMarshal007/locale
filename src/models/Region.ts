@@ -2,7 +2,7 @@ import { Schema, model, Document, Types } from 'mongoose';
 
 interface IRegion extends Document {
   name: string;
-  states: Types.ObjectId[];
+  states: string[];
   metadata: string;
 }
 

@@ -28,9 +28,8 @@ export const getRegions = async (req: Request, res: Response) => {
     const populatedRegions = await Promise.all(
       regions.map(async (region) => {
         const populatedRegion = region.toObject();
-        const states = await State.find({ _id: { $in: region.states } }).select('name');
-        //@ts-ignore
-        populatedRegion.states = states.map((state) => state.name);
+        const states = await State.find({ region: region._id }).select('name');
+        populatedRegion.states = states.map((state) => state.name); 
         return populatedRegion;
       })
     );
@@ -45,15 +44,15 @@ export const getStatesByRegion = async (req: Request, res: Response) => {
   const regionId = req.params.regionId;
 
   try {
-    const states: IState[] = await State.find({ region: regionId }).populate('region', 'name metadata');
-    const populatedStates: IState[] = states.map((state) => {
-      const populatedState: IState = state.toObject();
-      //@ts-ignore
-      populatedState.region = state.region.name as string; // Replace with the actual region name
-      //@ts-ignore
-      populatedState.metadata = state.region.metadata as string; // Populate the metadata of each state
-      return populatedState;
-    });
+    const states: IState[] = await State.find({ region: regionId });
+    const populatedStates: IState[] = await Promise.all(
+      states.map(async (state) => {
+        const populatedState: IState = state.toObject();
+  populatedState.region = (state.region as any)?.name || state.region.toString(); 
+      populatedState.metadata = (state.region as any)?.metadata || state.metadata; 
+        return populatedState;
+      })
+    );
     res.json({ states: populatedStates });
   } catch (error) {
     res.status(500).json({ message: 'Error retrieving states' });
@@ -65,14 +64,13 @@ export const search = async (req: Request, res: Response) => {
   const query: string = req.query.query as string;
 
   try {
-    const regions = await Region.find({ name: { $regex: query, $options: 'i' } });
+     const regions = await Region.find({ name: { $regex: query, $options: 'i' } });
     const populatedRegions = await Promise.all(
       regions.map(async (region) => {
         const populatedRegion = region.toObject();
-        const states = await State.find({ _id: { $in: region.states } }).select('name');
-        //@ts-ignore
+        const states = await State.find({ region: region._id }).select('name');
         populatedRegion.states = states.map((state) => state.name);
-        populatedRegion.metadata = region.metadata; // Populate region metadata from the database
+        populatedRegion.metadata = region.metadata;
         return populatedRegion;
       })
     );
@@ -82,11 +80,11 @@ export const search = async (req: Request, res: Response) => {
       states.map(async (state) => {
         const populatedState: IState = state.toObject();
         const region = await Region.findById(state.region);
-        //@ts-ignore
-        populatedState.region = region ? region.name as string : state.region; // Replace with the actual region name
-        populatedState.metadata = state.metadata; // Populate state metadata from the database
+    //@ts-ignore
+        populatedState.region = region ? region.name as string : state.region; 
+        populatedState.metadata = state.metadata; 
         populatedState.LGAs = (await LGA.find({
-state: state._id }).select('name')).map((lga) => lga.name); // Populate LGAs for the state
+state: state._id }).select('name')).map((lga) => lga.name);
 return populatedState;
 })
 );
@@ -95,8 +93,8 @@ const populatedLGAs = await Promise.all(
   lgas.map(async (lga) => {
     const populatedLGA = lga.toObject();
     const state: IState | null = await State.findById(lga.state);
-    populatedLGA.state = state ? state.name as string : lga.state; // Replace with the actual state name
-    populatedLGA.metadata = lga.metadata; // Populate LGA metadata from the database
+    populatedLGA.state = state ? state.name as string : lga.state; 
+    populatedLGA.metadata = lga.metadata; 
     return populatedLGA;
   })
 );
