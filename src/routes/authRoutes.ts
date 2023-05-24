@@ -15,22 +15,16 @@ router.post('/signup', async (req, res) => {
     const { name, email, password } = req.body;
     console.log( req.body );
 
-    // Generate API key
     const apiKey = Math.random().toString(36).substr(2, 12);
-
-    // Hash the password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Create a new user
     const newUser = new User({
       name,
       email,
       password: hashedPassword,
       apiKey,
     });
-
-    // Save the user to the database
     await newUser.save();
 
     res.json({
@@ -48,14 +42,10 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password, apiKey } = req.body;
 
-    // Find the user by email
     const user = await User.findOne({ email });
-
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
-
-    // Compare the provided password with the stored password
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {

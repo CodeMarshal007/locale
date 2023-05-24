@@ -29,8 +29,7 @@ export const getLGAs = async (req: Request, res: Response) => {
       lgas.map(async (lga) => {
         const populatedLGA: ILGA = lga.toObject();
        const state: IState | null = await State.findById(lga.state);
-        populatedLGA.state = state ? state.name : lga.state; // Replace with the actual state name
-        // Populate metadata based on your implementation
+        populatedLGA.state = state ? state.name : lga.state; 
         populatedLGA.metadata = lga.metadata;
         return populatedLGA;
       })

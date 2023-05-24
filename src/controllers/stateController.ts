@@ -31,7 +31,7 @@ export const getStates = async (req: Request, res: Response) => {
         const populatedState: IState = state.toObject();
         const region = await Region.findById(state.region);
         //@ts-ignore
-        populatedState.region = region ? region.name as string : state.region; // Replace with the actual region name
+        populatedState.region = region ? region.name as string : state.region; 
         populatedState.LGAs = (await LGA.find({ state: state._id }).select('name')).map((lga) => lga.name);
         return populatedState;
       })
@@ -52,8 +52,8 @@ export const getLGAsByState = async (req: Request, res: Response) => {
       lgas.map(async (lga) => {
         const populatedLGA = lga.toObject();
         const state: IState | null = await State.findById(lga.state);
-        populatedLGA.state = state ? state.name as string : lga.state; // Replace with the actual state name
-        populatedLGA.metadata = lga.metadata; // Assign the actual metadata from the LGA
+        populatedLGA.state = state ? state.name as string : lga.state; 
+        populatedLGA.metadata = lga.metadata; 
         return populatedLGA;
       })
     );

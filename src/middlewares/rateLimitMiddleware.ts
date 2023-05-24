@@ -15,7 +15,6 @@ const rateLimitMiddleware = (req: Request, res: Response, next: NextFunction) =>
     return res.status(429).json({ error: 'Too many requests. Please try again later.' });
   }
 
-  // Increment the request count
   requestsCount++;
 
   // Store the updated request count in the cache
