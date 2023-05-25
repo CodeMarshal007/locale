@@ -24,6 +24,11 @@
       - [1.5.3 Get Local Governments by State](#153-get-local-governments-by-state)
     - [1.6 Search](#16-search)
     - [1.7 Error Responses](#17-error-responses)
+  - [3. Installation and Setup](#3-installation-and-setup)
+    - [3.1 Clone the Repository](#31-clone-the-repository)
+    - [3.2 Set Up Environment Variables](#32-set-up-environment-variables)
+    - [3.3 Install Dependencies](#33-install-dependencies)
+    - [3.4 Run the Application](#34-run-the-application)
 
 ## 1. Introduction
 
@@ -407,6 +412,46 @@ Example Error Response:
   }
 }
 ```
+
+## 3. Installation and Setup
+
+To run the API locally, follow these steps:
+
+### 3.1 Clone the Repository
+
+```bash
+git clone git@github.com:CodeMarshal007/locale.git
+cd locale
+```
+
+### 3.2 Set Up Environment Variables
+
+Create a `.env` file in the root directory of the project and add the following environment variables:
+
+```
+PORT=3000
+DB_URL=<your-database-url>
+API_KEY_SECRET=<your-api-key-secret>
+JWT_SECRET=<your-jwt-secret>
+```
+
+Replace `<your-database-url>`, `<your-api-key-secret>`, and `<your-jwt-secret>` with your own values.
+
+### 3.3 Install Dependencies
+
+```bash
+npm install
+```
+
+### 3.4 Run the Application
+
+```bash
+npm start
+```
+
+The API will start running on `http://localhost:3000`.
+
+That covers the basics of the RESTful API for managing regions, states, and local governments. You can further extend the functionality based on your specific requirements.
 
 PS: nodemon is not loading mongodb url from env variable, RUN WITH "NPM START". I will fix this shortly.
 
