@@ -13,8 +13,7 @@ const myKey = process.env.MY_API_KEY;
 router.post('/signup', async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    console.log( req.body );
-
+    
     const apiKey = Math.random().toString(36).substr(2, 12);
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
