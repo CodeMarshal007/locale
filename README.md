@@ -28,7 +28,8 @@
     - [3.1 Clone the Repository](#31-clone-the-repository)
     - [3.2 Set Up Environment Variables](#32-set-up-environment-variables)
     - [3.3 Install Dependencies](#33-install-dependencies)
-    - [3.4 Run the Application](#34-run-the-application)
+    - [3.4 Build the Application](#34-build-the-application)
+    - [3.5 Run the Application](#35-run-the-application)
 
 ## 1. Introduction
 
@@ -429,6 +430,7 @@ cd locale
 Create a `.env` file in the root directory of the project and add the following environment variables:
 
 ```
+
 PORT=3000
 DB_URL=<your-database-url>
 API_KEY_SECRET=<your-api-key-secret>
@@ -443,17 +445,26 @@ Replace `<your-database-url>`, `<your-api-key-secret>`, and `<your-jwt-secret>` 
 npm install
 ```
 
-### 3.4 Run the Application
+### 3.4 Build the Application
+
+```bash
+npm run build
+```
+
+This will compile the TypeScript code into JavaScript and generate the necessary JavaScript files in the dist directory.
+
+### 3.5 Run the Application
 
 ```bash
 npm start
 ```
 
-The API will start running on `http://localhost:3000`.
+The API will start running on <http://localhost:3000>.
 
-That covers the basics of the RESTful API for managing regions, states, and local governments. You can further extend the functionality based on your specific requirements.
+That covers the basics of setting up and running the TypeScript-based RESTful API for managing regions, states, and local governments. If you make any changes to the code, you'll need to rebuild the application using `npm run build` before running it again.
 
 PS: nodemon is not loading mongodb url from env variable, RUN WITH "NPM START". I will fix this shortly.
 
+---
 
-            Coded with ❤️ By CodeMarshal
+                 Coded with ❤️ By CodeMarshal
